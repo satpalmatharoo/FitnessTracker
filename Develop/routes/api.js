@@ -26,7 +26,7 @@ router.put ("/workout + id", (req, res) => {
     {$push: {"excerise":excerise}},
     {new:true},
     
-  ]).then(dbExcerise => {
+  ).then(dbExcerise => {
     res.json(dbExcerise);
 
   }).catch(err => {
@@ -38,26 +38,20 @@ router.post("/workout", (req, res) =>{
   workout.create(req.body)
   .then(dbExcerise => {
     res.json(dbExcerise);
-  })
 }).catch(err => {
   res.status(400).json(err);
-}),
+});
+}));
 
 router.get("/workout/range", (req, res) => {
   workout.aggregrate([
     {
       $addFields: {
-        totalDuration: { $sum: "exercises.duration"},
-        totalWeight: {$sum: "$excercise.weight"},
+        totalDuration: { $sum: "exercise.duration"},
+        totalWeight: {$sum: "$exercise.weight"},
       },
     }
   ])
-
-
-
-//View the combined weight of multiple exercises from the past seven workouts on the `stats` page.
-
-
-//View the total duration of each workout from the past seven workouts on the `stats` page
+});
 
 module.exports = router;
