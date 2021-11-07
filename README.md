@@ -1,23 +1,23 @@
-# FitnessTracker
+## FitnessTracker
 An application enabling the user track their fitness journey to reach their unique fitness goals!  The App uses Mongo database structure.
 
-# Table of Contents
+## Table of Contents
 * Installation
 * Usage
 * License
 * Website 
 * Screenshots
 
-# Installation
+## Installation
 `npm i`
 `npi start`
 
-# Usage
+## Usage
 `npm run seeder j.s`
 
-# License
+## License
 Covered under the MIT License
 
-# Screenshots
+## Screenshots
 
 
