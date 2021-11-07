@@ -7,7 +7,7 @@ An application to help the user track their fitness journey which will help indi
 ## Deployed at
 
 ## Table of Contents
-* [Installation] (#installation)
+- [Installation](#installation)
 * Usage
 * License
 * Website 
