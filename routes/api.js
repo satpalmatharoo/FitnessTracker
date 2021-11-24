@@ -23,7 +23,7 @@ router.get (`/`, async (req, res) =>
 router.put ("/:id", (req, res) => {
   workout.findOneAndUpdate (
     {"_id": req.params.id},
-    {$push: {"excerise":excerise}},
+    {$push: {"excerise":req.body}},
     {new:true},
     
   ).then(dbExcerise => {
