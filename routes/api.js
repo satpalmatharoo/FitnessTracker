@@ -6,7 +6,7 @@ const { Router } = require("express");
 const workout = require("../models/workout.js");
 
 //Add exercises to the most recent workout plan.
-router.get ("/workout", (req, res) => 
+router.get (`/`, async (req, res) => 
    workout.aggregrate ([
         {
           $addFields: {
@@ -20,7 +20,7 @@ router.get ("/workout", (req, res) =>
         res.status(400).json(err);
     }),
 
-router.put ("/workout + id", (req, res) => {
+router.put ("/:id", (req, res) => {
   workout.findOneAndUpdate (
     {"_id": req.params.id},
     {$push: {"excerise":excerise}},
@@ -34,7 +34,7 @@ router.put ("/workout + id", (req, res) => {
   })
 }),
 
-router.post("/workout", (req, res) =>{
+router.post(`/`, (req, res) =>{
   workout.create(req.body)
   .then(dbExcerise => {
     res.json(dbExcerise);
@@ -43,7 +43,7 @@ router.post("/workout", (req, res) =>{
 });
 }));
 
-router.get("/workout/range", (req, res) => {
+router.get("/range", (req, res) => {
   workout.aggregrate([
     {
       $addFields: {
