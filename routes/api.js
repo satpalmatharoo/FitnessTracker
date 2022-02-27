@@ -2,65 +2,57 @@
 //take from  api.js end routes all apis
 
 const router = require("express").Router();
-const { Router } = require("express");
-const workout = require("../models/workout.js");
+const Workout = require("../models/workout.js");
+
 
 //Add exercises to the most recent workout plan.
-router.get (`/`, async (req, res) => 
-   workout.aggregrate ([
-        {
-          $addFields: {
-            totalDuration: { $sum: "$excerises.duration" } ,
-            totalWeight: { $sum: "$excerises.weight" },
-          }
+router.get (`/api/workouts`, (req, res) => {
+  Workout.aggregate([
+    {
+      $addFields:{
+        totalDuration:{
+          $sum:"$exercises.duration"
         }
-    ]).then(dbExcerise => {
-        res.json(dbExcerise);
-    }).catch(err => {
-        res.status(400).json(err);
+      }
+    }
+  ])
+    .then((dbData) => {
+      res.json(dbData);
+    })
+    .catch((err) => {
+      res.json(err);
+    });
     }),
 
-router.put ("/:id", (req, res) => {
-  workout.findOneAndUpdate (
-    {"_id": req.params.id},
-    {$push: {"excerise":req.body}},
-    {new:true},
-    
-  ).then(dbExcerise => {
-    res.json(dbExcerise);
+  router.get("/api/workouts/range", (req, res) => {
+    Workout.aggregate([
+      {
+        $addFields: {
+          totalDuration: { $sum: "$exercises.duration"},
+        },
+      }
+    ]).sort({
+      _id:-1
+    }).limit(7).then(data => {res.json(data)} ).catch(err => {res.json(err)})
+  });
 
+  router.post(`/api/workouts`, (req, res) =>{
+    Workout.create(req.body)
+    .then(dbExcerise => {
+      res.json(dbExcerise);
+  }).catch(err => {
+    res.status(400).json(err);
+  });
+})
+
+
+router.put ("/api/workouts/:id", (req, res) => {
+  Workout.findByIdAndUpdate(req.params.id, {$push: {"exercises":req.body}}).then(dbExcerise => {
+    res.json(dbExcerise);
   }).catch(err => {
     res.status(400).json(err);
   })
 }),
 
-router.post(`/`, (req, res) =>{
-  workout.create(req.body)
-  .then(dbExcerise => {
-    res.json(dbExcerise);
-}).catch(err => {
-  res.status(400).json(err);
-});
-}));
-
-router.get("/range", (req, res) => {
-  workout.aggregrate([
-    {
-      $addFields: {
-        totalDuration: { $sum: "exercise.duration"},
-        totalWeight: {$sum: "$exercise.weight"},
-      },
-    }
-  ])
-});
-router.get('/health', (req, res) => {
-  const data = {
-      uptime: process.uptime(),
-      message: 'Ok',
-      date: new Date()
-  }
-
-  res.status(200).send(data);
-});
 
 module.exports = router;
